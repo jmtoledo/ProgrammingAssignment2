@@ -12,31 +12,52 @@
 ## whith makeCacheMatrix creates the object and the functions 
 ## to  calculate and store the value, in m object
 ##
+##  Input 	: a matrix
+##  Output	: a list of funtions 
+##			: and initiate m object to null
+##
 makeCacheMatrix <- function(x = matrix()) {
+		## iniciates m to null
         m <- NULL
+		##  function to set the matrix
         set <- function(y) {
                 x <<- y
                 m <<- NULL
         }
+		##  function to get the matrix
         get <- function() x
+		##  function to set the inverse matrix
         setsolve <- function(inverse) m <<- inverse
+		##  function to get the inverse matrix
         getsolve <- function() m
+		## return de list of functions involved
         list(set = set, get = get, setsolve = setsolve,
              getsolve = getsolve)
 }
+
 ## With cacheSolve gets the matrix inverse of x, 
 ## 		 - if it was calculated before, simply get it 
 ## 		 - if not, calculate it and store it.
+## Input	: a matrix
+## Output	: the inverse matrix of the input
+##			: and a message if we get it from cached data
+##
 cacheSolve <- function(x, ...) {
-  m <- x$getsolve()
-        if(!is.null(m)) {
+		## trying to get the inverse matrix from cached data
+		m <- x$getsolve()
+        ## if success, print message and return the object
+		if(!is.null(m)) {
                 message("getting cached data")
                 return(m)
         }
+		## elsewhere, gets the original matrix
         data <- x$get()
+		## then calculated its inverse
         m <- solve(data, ...)
+		##  and store it in m object
         x$setsolve(m)
-        m
+		## finally, return its value
+        m							 
 }
 ##
 ## Example in console: 
@@ -65,4 +86,4 @@ cacheSolve <- function(x, ...) {
 ##	[1,]  -24   20   -5
 ##	[2,]   18  -15    4
 ##	[3,]    5   -4    1
-## so, inverse matrix was obtain from cached date instead of calculate ## if again
+## thus, inverse matrix was obtain from cached date instead correctly
